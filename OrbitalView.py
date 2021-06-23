@@ -6,6 +6,7 @@ import threading, queue
 import multiprocessing
 import socket
 import time
+import csv
 
 
 def save():  # saving to mp4
@@ -43,7 +44,7 @@ if __name__ == "__main__":
     cam.AcquisitionMode = "Continuous"
     cam.start()  # Start recording
 
-    # ensure frame rate is 500
+    # try make the frame rate 500
     cam.AcquisitionFrameRateAuto = "Off"
     cam.AcquisitionFrameRateEnabled = True
     cam.AcquisitionFrameRate = 500
@@ -53,6 +54,7 @@ if __name__ == "__main__":
     sock.setblocking(0)  # non-blocking, important!!!
 
     q = queue.Queue()  # queue for ffmpeg
+    time_list = []
     displayq = multiprocessing.Queue()
     exit_flag = multiprocessing.Queue()
     start_flag = multiprocessing.Queue()
@@ -77,7 +79,8 @@ if __name__ == "__main__":
 
                 height, width = img.shape
                 # the filename is up to second precision
-                fn = f"{datetime.today().strftime('%Y-%m-%d-%H-%M-%S')}.mp4"
+                fn_base = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
+                fn = f"{fn_base}.mp4"
                 process = (
                     ffmpeg.input(
                         "pipe:",
@@ -89,7 +92,7 @@ if __name__ == "__main__":
                         fn,
                         pix_fmt="yuv420p",
                         vcodec="h264_nvenc",
-                        **{"qmin": 13, "qmax": 13, "vsync": 0},
+                        **{"qmin": 16, "qmax": 16, "vsync": 0},
                     )
                     .overwrite_output()
                     .run_async(pipe_stdin=True)
@@ -102,6 +105,7 @@ if __name__ == "__main__":
                 # get a new image since the current one is out-of-date (due to time spent on spawning thread)
                 img = cam.get_array()
 
+            time_list.append(time.perf_counter())
             q.put(img)
 
         n = (n + 1) % 10  # display the live view at 500/10=50FPS to save CPU time
@@ -111,6 +115,15 @@ if __name__ == "__main__":
     print("All task requests sent")
 
     q.join()  # block until all tasks are done
+
+    try:
+        with open(f'{fn_base}.csv', 'w') as f:
+            # using csv.writer method from CSV package
+            write = csv.writer(f, delimiter='\n')
+            write.writerow(time_list)
+    except Exception as e:
+        pass
+
     print("All work completed")
     if thread_start_flag:  # recording operation used, need to close the process
         process.stdin.close()  # close ffmpeg
