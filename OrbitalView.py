@@ -122,7 +122,8 @@ if __name__ == "__main__":
             write = csv.writer(f, delimiter='\n')
             write.writerow(time_list)
     except Exception as e:
-        pass
+        print(f"Error when saving the timestamp file {fn_base}.csv!")
+        print(e)
 
     print("All work completed")
     if thread_start_flag:  # recording operation used, need to close the process
