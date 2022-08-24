@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
                 height, width = img.shape
                 # the filename is up to second precision
-                fn_base = datetime.today().strftime('%Y-%m-%d-%H-%M-%S')
+                fn_base = datetime.today().strftime('%Y-%m-%d-%H-%M-%S.%f')
                 fn = f"{fn_base}.mp4"
                 process = (
                     ffmpeg.input(
