@@ -20,7 +20,7 @@ It
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
 4. Use conda to install numpy and opencv
-`conda install python=3.8 numpy opencv`
+`conda install -c conda-forge python=3.8 numpy opencv`
 
 5. `pip install simple_pyspin ffmpeg-python`
 6. Download ffmpeg binary and add its location to Windows Environment Path
