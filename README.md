@@ -20,11 +20,13 @@ It
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
 4. Use conda to install numpy and opencv
-`conda install -c conda-forge python=3.8 numpy opencv`
+`conda install -c conda-forge python=3.10 numpy opencv`
 
 5. `pip install simple_pyspin ffmpeg-python`
 6. Download ffmpeg binary and add its location to Windows Environment Path
-7. Download the Spinnaker Python library (https://meta.box.lenovo.com/v/link/view/a1995795ffba47dbbe45771477319cc3). Make sure it's the correct Python version (Spinnake/Windows/Python/spinnaker_python-xxxxxx-cp38-cp38m-win_amd64.zip). Unzip and install the wheel file --- navigate to the direction and do `pip install the_whl_file_that_got_unzipped.whl`
+7. Download the Spinnaker Python library (https://meta.box.lenovo.com/v/link/view/a1995795ffba47dbbe45771477319cc3).
+Make sure it's the correct Python version (Spinnake/Windows/Python/spinnaker_python-xxxxxx-**cp310-cp310-win_amd64**.zip).
+Unzip and install the wheel file --- navigate to the direction and do `pip install the_whl_file_that_got_unzipped.whl`
 8. Make sure to have latest NVIDIA GPU driver to enable GPU accelerated encoding
 
 
