@@ -83,6 +83,7 @@ if __name__ == "__main__":
 
         if not start_flag.empty():  # start saving to mp4
             if not thread_started_flag:
+                logging.info("Recording started!")
                 thread_started_flag = True  # start the thread only once
 
                 height, width = img.shape
@@ -93,7 +94,7 @@ if __name__ == "__main__":
                 container = av.open(fn, mode="w")
                 stream = container.add_stream(
                     "h264_nvenc",
-                    rate=25, # hard-coded frame rate
+                    rate=25,  # hard-coded frame rate
                     options={
                         "qmin": "16",
                         "qmax": "16",
@@ -119,20 +120,19 @@ if __name__ == "__main__":
             displayq.put(img)
 
     logging.info("All task requests sent")
-
     q.join()  # block until all tasks are done
-
-    try:
-        with open(f"{fn_base}.csv", "w") as f:
-            # using csv.writer method from CSV package
-            write = csv.writer(f, delimiter="\n")
-            write.writerow(time_list)
-    except Exception as e:
-        logging.error(f"Error when saving the timestamp file {fn_base}.csv!")
-        logging.error(e)
-
     logging.info("All work completed")
+
     if thread_started_flag:  # recording operation used, need to close the process
+        try:
+            with open(f"{fn_base}.csv", "w") as f:
+                # using csv.writer method from CSV package
+                write = csv.writer(f, delimiter="\n")
+                write.writerow(time_list)
+        except Exception as e:
+            logging.error(f"Error when saving the timestamp file {fn_base}.csv!")
+            logging.error(e)
+
         # Flush stream
         for packet in stream.encode():
             container.mux(packet)
