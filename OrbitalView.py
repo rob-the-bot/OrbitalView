@@ -1,18 +1,25 @@
-from simple_pyspin import Camera
+import csv
+import logging
 from datetime import datetime
-import ffmpeg
-import cv2
 import threading, queue
 import multiprocessing
 import socket
 import time
-import csv
+
+import av
+import cv2
+from simple_pyspin import Camera
 
 
 def save():  # saving to mp4
     while True:
         img = q.get()
-        process.stdin.write(img.tobytes())
+
+        # encode the image
+        frame = av.VideoFrame.from_ndarray(img, format="gray8")
+        for packet in stream.encode(frame):
+            container.mux(packet)
+
         q.task_done()
 
 
@@ -38,6 +45,7 @@ def view(displayq, exit_flag, start_flag, sock):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
 
     cam = Camera()  # Acquire Camera
     cam.init()  # Initialize camera
@@ -81,22 +89,20 @@ if __name__ == "__main__":
                 # the filename is up to second precision
                 fn_base = datetime.today().strftime('%Y-%m-%d-%H-%M-%S.%f')
                 fn = f"{fn_base}.mp4"
-                process = (
-                    ffmpeg.input(
-                        "pipe:",
-                        format="rawvideo",
-                        pix_fmt="gray",
-                        s="{}x{}".format(width, height),
-                    )
-                    .output(
-                        fn,
-                        pix_fmt="yuv420p",
-                        vcodec="h264_nvenc",
-                        **{"qmin": 16, "qmax": 16, "vsync": 0},
-                    )
-                    .overwrite_output()
-                    .run_async(pipe_stdin=True)
+
+                container = av.open(fn, mode="w")
+                stream = container.add_stream(
+                    "h264_nvenc",
+                    rate=25, # hard-coded frame rate
+                    options={
+                        "qmin": "16",
+                        "qmax": "16",
+                        "vsync": "0",
+                    },
                 )
+                stream.width = width
+                stream.height = height
+                stream.pix_fmt = "yuv420p"
 
                 # turn-on the thread which saves the output
                 threading.Thread(target=save, daemon=True).start()
@@ -112,7 +118,7 @@ if __name__ == "__main__":
         if n == 0:
             displayq.put(img)
 
-    print("All task requests sent")
+    logging.info("All task requests sent")
 
     q.join()  # block until all tasks are done
 
@@ -122,10 +128,17 @@ if __name__ == "__main__":
             write = csv.writer(f, delimiter='\n')
             write.writerow(time_list)
     except Exception as e:
-        print(f"Error when saving the timestamp file {fn_base}.csv!")
-        print(e)
+        logging.error(f"Error when saving the timestamp file {fn_base}.csv!")
+        logging.error(e)
 
+    logging.info("All work completed")
     if thread_started_flag:  # recording operation used, need to close the process
+        # Flush stream
+        for packet in stream.encode():
+            container.mux(packet)
+
+        # Close the file
+        container.close()
 
     cam.stop()  # Stop recording
     cam.close()  # You should explicitly clean up
