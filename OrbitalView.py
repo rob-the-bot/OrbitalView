@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
                 height, width = img.shape
                 # the filename is up to second precision
-                fn_base = datetime.today().strftime('%Y-%m-%d-%H-%M-%S.%f')
+                fn_base = datetime.today().strftime("%Y-%m-%d-%H-%M-%S.%f")
                 fn = f"{fn_base}.mp4"
 
                 container = av.open(fn, mode="w")
@@ -123,9 +123,9 @@ if __name__ == "__main__":
     q.join()  # block until all tasks are done
 
     try:
-        with open(f'{fn_base}.csv', 'w') as f:
+        with open(f"{fn_base}.csv", "w") as f:
             # using csv.writer method from CSV package
-            write = csv.writer(f, delimiter='\n')
+            write = csv.writer(f, delimiter="\n")
             write.writerow(time_list)
     except Exception as e:
         logging.error(f"Error when saving the timestamp file {fn_base}.csv!")
