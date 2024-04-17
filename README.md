@@ -10,7 +10,7 @@ It
 
 ## Usage
 
-1. Double click `startOrbitalView.bat` to start the program
+1. Launch `OrbitalView.py`
 2. You can see the live view from the small GUI
 3. Press `s` to start recording, `q` to quit (close the window from GUI doesn't do anything, sorry). The detailed info about encoding is shown in the terminal.
 4. This program also supports receiving UDP trigger from any other programs to start/end recording. The port it uses for UDP is Port 6611 (line 53 in `OrbitalView.py`).
@@ -20,7 +20,7 @@ It
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
 4. Use conda to install numpy and opencv
-`conda install -c conda-forge python=3.10 numpy opencv`
+`conda install -c conda-forge python=3.10 numpy opencv av`
 
 5. `pip install simple_pyspin ffmpeg-python`
 6. Download ffmpeg binary and add its location to Windows Environment Path
@@ -31,12 +31,15 @@ Unzip and install the wheel file --- navigate to the direction and do `pip insta
 
 
 ## Deployment (other platforms)
-This program works in Mac and Linux. However, to enable GPU acceleration, you need to have ffmpeg compiled with `--enable-nvenc`, which is done for the binary released for Windows. On other platforms, you need to compile ffmpeg from source to enable the `--enable-nvenc` flag to do GPU encoding.
+This program works in Mac and Linux. However, to enable GPU acceleration, you need to have ffmpeg compiled with `--enable-nvenc`, which is done for the binary released for Windows.
+On other platforms, you need to compile ffmpeg from source to enable the `--enable-nvenc` flag to do GPU encoding.
 
-It might been tricky to get nvenc to work in Mac. You might need to change from GPU encoding to CPU encoding (line 91-95). CPU encoding usually doesn't give you 500FPS so you need to give more detailed parameters in line 95 (for example, make use `ultrafast` `preset` and use sensible `crf` number).
+It might been tricky to get nvenc to work in Mac. You might need to change from GPU encoding to CPU encoding (line 91-95).
+CPU encoding usually doesn't give you 500FPS so you need to give more detailed parameters in line 95 (for example, make use `ultrafast` `preset` and use sensible `crf` number).
 
 ## Known issues
-From SpinView (the proper GUI), we can see the recording rate fluctuates around 500FPS. This is possibly due to hardware limitation.
+From SpinView (the proper GUI), we can see the recording rate fluctuates around 500FPS.
+This is possibly due to hardware limitation.
 
 Basic benchmark was run using OrbitalView and the timestamp output was analysed.
 The first 20 frames were recording at much lower FPS than 500.
