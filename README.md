@@ -24,7 +24,7 @@ It
 
 5. `pip install simple_pyspin ffmpeg-python`
 6. Download ffmpeg binary and add its location to Windows Environment Path
-7. Download the Spinnaker Python library (https://meta.box.lenovo.com/v/link/view/a1995795ffba47dbbe45771477319cc3).
+7. Download the Spinnaker Python library [here](https://www.flir.com/support-center/iis/machine-vision/downloads/spinnaker-sdk-download/spinnaker-sdk--download-files/).
 Make sure it's the correct Python version (Spinnake/Windows/Python/spinnaker_python-xxxxxx-**cp310-cp310-win_amd64**.zip).
 Unzip and install the wheel file --- navigate to the direction and do `pip install the_whl_file_that_got_unzipped.whl`
 8. Make sure to have latest NVIDIA GPU driver to enable GPU accelerated encoding
