@@ -66,7 +66,7 @@ if __name__ == "__main__":
     ).start()
 
     n = 0
-    thread_start_flag = False
+    thread_started_flag = False
     while True:
         if not exit_flag.empty():  # exit_flag is non-empty, exit
             # print(f"finish: {time.time()}")
@@ -74,8 +74,8 @@ if __name__ == "__main__":
         img = cam.get_array()
 
         if not start_flag.empty():  # start saving to mp4
-            if not thread_start_flag:
-                thread_start_flag = True  # start the thread only once
+            if not thread_started_flag:
+                thread_started_flag = True  # start the thread only once
 
                 height, width = img.shape
                 # the filename is up to second precision
@@ -125,10 +125,7 @@ if __name__ == "__main__":
         print(f"Error when saving the timestamp file {fn_base}.csv!")
         print(e)
 
-    print("All work completed")
-    if thread_start_flag:  # recording operation used, need to close the process
-        process.stdin.close()  # close ffmpeg
-        process.wait()
+    if thread_started_flag:  # recording operation used, need to close the process
 
     cam.stop()  # Stop recording
     cam.close()  # You should explicitly clean up
