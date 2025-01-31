@@ -1,11 +1,11 @@
 # OrbitalView
 
-This program (`OrbitalView.py`) is used for recording tail movement with the FLIR grasshopper camera.
+This program (`OrbitalView.py`) is used for recording at fast FPS with the FLIR grasshopper camera.
 It
 
-1. shows a live view @ 50FPS (since a monitor is only 60Hz)
+1. shows a live view @ 50FPS (since most monitors are still only 60Hz)
 2. receives inputs from keyboard/UDP trigger to start/end recording
-3. saves it @ 500FPS to a h264 encoded mp4 file (the metadata in the mp4 file says 25FPS but that's just the FPS used for playback)
+3. saves it @ 500FPS to a h264 encoded mp4 file with default playback @ 25FPS
 
 
 ## Usage
@@ -16,16 +16,15 @@ It
 4. This program also supports receiving UDP trigger from any other programs to start/end recording. The port it uses for UDP is Port 6611 (line 53 in `OrbitalView.py`).
 
 ## Deployment (Windows)
-1. Install Miniconda, check the box with says `Add Miniconda3 to my PATH environment variable` (this enables activating environment from a bat file)
+
+1. Install [miniforge](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe)
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
-4. Use conda to install numpy, opencv (for the liveview), pyav (for encoding)
-`conda install -c conda-forge python=3.10 numpy opencv av`
+4. Use mamba to install numpy, opencv (for the liveview), pyav (for encoding)
+`mamba install python=3.10 numpy opencv av`
 
 5. `pip install simple_pyspin`
-6. Download the Spinnaker Python library [here](https://www.flir.com/support-center/iis/machine-vision/downloads/spinnaker-sdk-download/spinnaker-sdk--download-files/).
-Make sure it's the correct Python version (Spinnake/Windows/Python/spinnaker_python-xxxxxx-**cp310-cp310-win_amd64**.zip).
-Unzip and install the wheel file --- navigate to the direction and do `pip install the_whl_file_that_got_unzipped.whl`
+6. Download the Spinnaker SDK [here](https://www.flir.com/support-center/iis/machine-vision/downloads/spinnaker-sdk-download/spinnaker-sdk--download-files/)
 7. Make sure to have latest NVIDIA GPU driver to enable GPU accelerated encoding
 
 
@@ -33,9 +32,9 @@ Unzip and install the wheel file --- navigate to the direction and do `pip insta
 This program works in Mac and Linux. However, to enable GPU acceleration, you need to have ffmpeg compiled with `--enable-nvenc`, which is done for the binary released for Windows.
 On other platforms, you need to compile ffmpeg from source to enable the `--enable-nvenc` flag to do GPU encoding.
 
-It might been tricky to get nvenc to work in Mac.
-You might need to change from GPU encoding to CPU encoding (line 91-95).
-CPU encoding usually doesn't give you 500FPS so you need to give more detailed parameters in line 95 (for example, make use `ultrafast` `preset` and use sensible `crf` number).
+On Mac, you might need to change from GPU encoding to CPU encoding (line 91-95).
+CPU encoding with default preset usually isn't fast enough for 500FPS,
+so you need to give more detailed parameters in line 95 (for example, use `ultrafast` preset and use sensible `crf` number).
 
 ## Known issues
 From SpinView (the proper GUI), we can see the recording rate fluctuates around 500FPS.
