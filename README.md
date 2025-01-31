@@ -24,7 +24,7 @@ It
 `mamba install python=3.10 numpy opencv av`
 
 5. `pip install simple_pyspin`
-6. Download the Spinnaker SDK [here](https://www.flir.com/support-center/iis/machine-vision/downloads/spinnaker-sdk-download/spinnaker-sdk--download-files/)
+6. Download the Windows Python Spinnaker SDK 4.0.0.116 (December 14, 2023) [here](https://www.flir.com/support-center/iis/machine-vision/downloads/spinnaker-sdk-download/spinnaker-sdk--download-files/)
 7. Make sure to have latest NVIDIA GPU driver to enable GPU accelerated encoding
 
 
