@@ -26,8 +26,8 @@ however this limits the types of hardware accelerated encoders being used&mdash;
 If you'd like to use different types of hardware acceleration,
 look at [previous version of the code](https://github.com/rob-the-bot/OrbitalView/commit/366ff4804132375f8ad5d41ced7a28b9c82615c2) where `ffmpeg-python` was used.
 With this, any codecs supported by your `ffmpeg` binary are also supported by this Python program.
-I've tested {`h264_qsv`, `hevc_qsv`, AMD encoders} and they work.
-   te that this shouldn't be needed most of the time, if software encoding can work for you as mentioned in step 1.
+{`h264_qsv`, `hevc_qsv`, AMD encoders} were tested to be working on Windows.
+Note that this shouldn't be needed most of the time, if software encoding can work for you as mentioned in step 1.
 
 ## Deployment
 
