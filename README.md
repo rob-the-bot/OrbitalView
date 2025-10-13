@@ -36,8 +36,8 @@ Note that this shouldn't be needed most of the time, if software encoding can wo
 1. Install [miniforge](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Windows-x86_64.exe)
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
-4. Use mamba to install numpy, opencv (for the liveview), pyav (for encoding)
-`mamba install python=3.10 numpy opencv av "ffmpeg<8.0"`
+4. Use conda to install numpy, opencv (for the liveview), pyav (for encoding)
+`conda install python=3.10 numpy opencv av "ffmpeg<8.0"`
 
 5. `pip install simple_pyspin`
 6. Download the Python 3.10 Spinnaker SDK 4.2.0.88 for Windows (June 27, 2025) [here](https://flir.netx.net/file/asset/71702/original/attachment).
