@@ -37,10 +37,10 @@ Note that this shouldn't be needed most of the time, if software encoding can wo
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
 4. Use conda to install numpy, opencv (for the liveview), pyav (for encoding)
-`conda install python=3.10 numpy opencv av "ffmpeg<8.0"`
+`conda install python=3.12 numpy opencv av ffmpeg`
 
 5. `pip install simple_pyspin`
-6. Download the Python 3.10 Spinnaker SDK 4.2.0.88 for Windows (June 27, 2025) [here](https://flir.netx.net/file/asset/71702/original/attachment).
+6. Download the Python 3.12 Spinnaker SDK 4.4.0.246 for Windows (August 13, 2026) [here](https://flir.netx.net/file/asset/76883/original/attachment).
 Unzip and install the wheel (whl) file&mdash;navigate to the directory, and do `pip install the_whl_file_that_got_unzipped.whl`
 7. Make sure to have latest NVIDIA GPU driver to enable GPU accelerated encoding
 8. Check that `h264_nvenc` is supported by the installed `pyav`, do `assert "h264_nvenc" in av.codecs_available` as suggested [here](https://github.com/PyAV-Org/PyAV/issues/596#issuecomment-755307214) in Python.
