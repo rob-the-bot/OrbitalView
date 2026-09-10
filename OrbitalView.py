@@ -59,8 +59,7 @@ if __name__ == "__main__":
     try:
         cam = Camera()  # Acquire Camera
     except CameraError as e:
-        logging.error(e)
-        logging.info("Use random frames.")
+        logging.error(f"{e} Use random frames.")
         cam = Dummy()
 
     cam.init()  # Initialize camera
