@@ -7,8 +7,9 @@ import socket
 import time
 
 import av
+import numpy as np
 import cv2
-from simple_pyspin import Camera
+from simple_pyspin import Camera, CameraError
 
 
 def save():  # saving to mp4
@@ -44,10 +45,24 @@ def view(displayq, exit_flag, start_flag, sock):
                 break
 
 
+class Dummy():
+    def get_array(self):
+        time.sleep(1/30)
+        return np.random.randint(0, 255, (1080, 1920), dtype=np.uint8)
+
+    init = start = stop = close = lambda self: None
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    cam = Camera()  # Acquire Camera
+    try:
+        cam = Camera()  # Acquire Camera
+    except CameraError as e:
+        logging.error(e)
+        logging.info("Use random frames.")
+        cam = Dummy()
+
     cam.init()  # Initialize camera
     cam.AcquisitionMode = "Continuous"
     cam.start()  # Start recording
