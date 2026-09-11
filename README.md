@@ -37,7 +37,7 @@ Note that this shouldn't be needed most of the time, if software encoding can wo
 2. Create a conda environment, `conda create -n spinview`
 3. Activate the environment, `conda activate spinview`
 4. Use conda to install numpy, opencv (for the liveview), pyav (for encoding)
-`conda install python=3.12 numpy opencv av ffmpeg`
+`conda install python=3.12 numpy opencv av`
 
 5. `pip install simple_pyspin`
 6. Download the Python 3.12 Spinnaker SDK 4.4.0.246 for Windows (August 13, 2026) [here](https://flir.netx.net/file/asset/76883/original/attachment).
